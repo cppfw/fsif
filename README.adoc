@@ -8,4 +8,6 @@
 
 File system abstraction library in C++.
 
+`{name}` = File System InterFace.
+
 link:wiki/Main.adoc[WiKi]
