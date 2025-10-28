@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-set(name papki)
+set(name fsif)
 project(${name})
 
 # !!! find_package must go after project() declaration !!!

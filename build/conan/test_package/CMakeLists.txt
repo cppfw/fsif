@@ -3,7 +3,7 @@ project(PackageTest CXX)
 
 # set(CMAKE_VERBOSE_MAKEFILE on)
 
-find_package(papki CONFIG REQUIRED)
+find_package(fsif CONFIG REQUIRED)
 
 add_executable(example example.cpp)
-target_link_libraries(example papki::papki)
+target_link_libraries(example fsif::fsif)

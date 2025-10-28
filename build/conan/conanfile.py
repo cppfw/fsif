@@ -4,12 +4,12 @@ from conan.tools.scm import Git
 from conan.tools.files import load, update_conandata, copy
 from conan.tools.layout import basic_layout
 
-class PapkiConan(ConanFile):
-	name = "papki"
+class FsifConan(ConanFile):
+	name = "fsif"
 	license = "MIT"
 	author = "Ivan Gagis <igagis@gmail.com>"
 	url = "http://github.com/cppfw/" + name
-	description = "File system abstraction C++ library"
+	description = "File System InterFace C++ library"
 	topics = ("C++", "cross-platform")
 	settings = "os", "compiler", "build_type", "arch"
 	package_type = "library"

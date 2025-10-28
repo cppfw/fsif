@@ -1,7 +1,7 @@
 = WiKi main page
 
 == Istallation
-:package_name: papki
+:package_name: fsif
 
 . Setup your OS-preferred package system repo following link:https://github.com/cppfw/wiki/blob/main/enable_repo/enable_repo.adoc[this manual]
 . Install package

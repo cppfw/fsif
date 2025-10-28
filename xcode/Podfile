@@ -1,9 +1,9 @@
 source 'https://github.com/cppfw/cocoapods-repo.git'
 
-project 'papki/papki.xcodeproj'
+project 'fsif/fsif.xcodeproj'
 
 platform :ios, '9.0'
 
-target "papki" do
+target "fsif" do
 	pod 'utki', '>= 1.1.164'
 end

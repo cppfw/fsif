@@ -1,6 +1,6 @@
 #include "main.hpp"
 
-#include "../../src/papki/fs_file.hpp"
+#include "../../src/fsif/fs_file.hpp"
 
 #ifdef assert
 #	undef assert
@@ -8,11 +8,11 @@
 
 // NOLINTNEXTLINE(bugprone-exception-escape, "we want uncaught exceptions to fail the tests")
 int main(int /* argc */, const char** /* argv */){
-	test_papki_fs_file();
+	test_fsif_fs_file();
 
 	// test file size
 	{
-		papki::fs_file f("test.file.txt");
+		fsif::fs_file f("test.file.txt");
 
 		auto size = f.size();
 

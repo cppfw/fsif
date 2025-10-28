@@ -1,9 +1,9 @@
 #include <utki/debug.hpp>
 #include <utki/types.hpp>
 
-#include "../../src/papki/fs_file.hpp"
-#include "../../src/papki/root_dir.hpp"
-#include "../../src/papki/util.hpp"
+#include "../../src/fsif/fs_file.hpp"
+#include "../../src/fsif/root_dir.hpp"
+#include "../../src/fsif/util.hpp"
 
 #include "tests.hpp"
 
@@ -13,7 +13,7 @@
 
 namespace test_seek_forward{
 void run(){
-	papki::fs_file f("test.file.txt");
+	fsif::fs_file f("test.file.txt");
 	utki::assert(!f.is_dir(), SL);
 	utki::assert(!f.is_open(), SL);
 	
@@ -22,7 +22,7 @@ void run(){
 		{
 			std::vector<uint8_t> buf(num_to_seek);
 			
-			papki::file::guard file_guard(f, papki::mode::read);
+			fsif::file::guard file_guard(f, fsif::mode::read);
 			
 			auto res = f.read(utki::make_span(buf));
 			utki::assert(res == buf.size(), SL);
@@ -32,7 +32,7 @@ void run(){
 		}
 		
 		{
-			papki::file::guard file_guard(f, papki::mode::read);
+			fsif::file::guard file_guard(f, fsif::mode::read);
 
 			f.file::seek_forward(num_to_seek);
 
@@ -45,7 +45,7 @@ void run(){
 		}
 
 		{
-			papki::file::guard file_guard(f, papki::mode::read);
+			fsif::file::guard file_guard(f, fsif::mode::read);
 
 			f.seek_forward(num_to_seek);
 
@@ -64,8 +64,8 @@ void run(){
 
 namespace test_list_dir_contents{
 void run(){
-	papki::fs_file cur_dir("./");
-	papki::file& f = cur_dir;
+	fsif::fs_file cur_dir("./");
+	fsif::file& f = cur_dir;
 	
 	std::vector<std::string> r = f.list_dir();
 #ifdef DEBUG
@@ -90,10 +90,10 @@ void run(){
 
 namespace test_home_dir{
 void run(){
-	std::string hd = papki::fs_file::get_home_dir();
+	std::string hd = fsif::fs_file::get_home_dir();
 	
 	utki::assert(hd.size() != 0, SL); // There is always a trailing '/' character, so make sure there is something else besides that.
-	utki::assert(papki::is_dir(hd), SL);
+	utki::assert(fsif::is_dir(hd), SL);
 	
 	utki::log([&](auto&o){o << "\tHome dir = " << hd << std::endl;});
 }
@@ -103,7 +103,7 @@ void run(){
 
 namespace test_load_whole_file_to_memory{
 void run(){
-	papki::root_dir f(std::make_unique<papki::fs_file>(), "");
+	fsif::root_dir f(std::make_unique<fsif::fs_file>(), "");
 	f.set_path("test.file.txt");
 	utki::assert(!f.is_dir(), SL);
 	utki::assert(!f.is_open(), SL);

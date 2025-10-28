@@ -1,0 +1,9 @@
+Name: fsif   # human-readable name
+Description: C++ file system library # human-readable description
+Version: $(version)
+URL: https://github.com/cppfw/fsif
+Requires:
+Conflicts:
+Libs: -lfsif
+Libs.private:
+Cflags:

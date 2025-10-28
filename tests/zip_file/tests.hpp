@@ -1,6 +1,6 @@
 #pragma once
 
 
-namespace test_papki_zip_file{
+namespace test_fsif_zip_file{
 void run();
 }

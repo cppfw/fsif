@@ -5,7 +5,7 @@ include prorab-clang-format.mk
 
 $(eval $(call prorab-config, ../config))
 
-this_src_dir := papki
+this_src_dir := fsif
 this_name := $(this_src_dir)$(this_dbg)
 
 this_soname := $(shell cat $(d)soname.txt)

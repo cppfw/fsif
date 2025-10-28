@@ -1,4 +1,4 @@
-#include "../../src/papki/span_file.hpp"
+#include "../../src/fsif/span_file.hpp"
 
 // NOLINTNEXTLINE(bugprone-exception-escape, "we want uncaught exceptions to fail the tests")
 int main(int /* argc */, const char** /* argv */){
@@ -9,7 +9,7 @@ int main(int /* argc */, const char** /* argv */){
 		// NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
 		auto span = utki::make_span(reinterpret_cast<const uint8_t*>(hw), strlen(hw));
 
-		papki::span_file file(span);
+		fsif::span_file file(span);
 
 		auto res = file.load();
 
@@ -27,7 +27,7 @@ int main(int /* argc */, const char** /* argv */){
 
 		auto span = utki::make_span(hw);
 
-		papki::span_file file(span);
+		fsif::span_file file(span);
 
 		auto res = file.load();
 
@@ -45,9 +45,9 @@ int main(int /* argc */, const char** /* argv */){
 
 		auto span = utki::make_span(hw);
 
-		papki::span_file file(span);
+		fsif::span_file file(span);
 
-		file.open(papki::mode::read);
+		file.open(fsif::mode::read);
 
 		std::array<char, 3> buf{};
 		{

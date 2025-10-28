@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "io.github.cppfw.papki_test"
+        applicationId "io.github.cppfw.fsif_test"
         minSdkVersion 21
         targetSdkVersion 29
 

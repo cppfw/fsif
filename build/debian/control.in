@@ -1,4 +1,4 @@
-Source: libpapki
+Source: libfsif
 Section: libs
 Priority: extra
 Maintainer: Ivan Gagis <igagis@gmail.com>
@@ -13,7 +13,7 @@ Build-Depends: g++ (>=4:4.8), debhelper (>= 9),
 Build-Depends-Indep: doxygen
 Standards-Version: 3.9.2
 
-Package: libpapki$(soname)
+Package: libfsif$(soname)
 Section: libs
 Architecture: any
 Depends:
@@ -22,39 +22,39 @@ Depends:
 Description: cross-platform C++ file system library.
 	File system abstraction library.
 
-Package: libpapki-dbg$(soname)
+Package: libfsif-dbg$(soname)
 Section: libs
 Architecture: any
 Depends:
 	${shlibs:Depends},
 	${misc:Depends}
 Description: cross-platform C++ file system library.
-	Debug version of libpapki.
+	Debug version of libfsif.
 
-Package: libpapki$(soname)-dbgsrc
+Package: libfsif$(soname)-dbgsrc
 Section: debug
 Architecture: all
 Depends:
-	libpapki$(soname)-dbgsym (= ${binary:Version}),
-	libpapki-dbg$(soname)-dbgsym (= ${binary:Version}),
+	libfsif$(soname)-dbgsym (= ${binary:Version}),
+	libfsif-dbg$(soname)-dbgsym (= ${binary:Version}),
 	${misc:Depends}
-Description: debugging sources for libpapki$(soname) package.
+Description: debugging sources for libfsif$(soname) package.
 
-Package: libpapki-dev
+Package: libfsif-dev
 Section: libdevel
 Architecture: any
 Depends:
-	libpapki$(soname) (= ${binary:Version}),
-	libpapki-dbg$(soname) (= ${binary:Version}),
+	libfsif$(soname) (= ${binary:Version}),
+	libfsif-dbg$(soname) (= ${binary:Version}),
 	${misc:Depends},
 	libutki-dev
-Suggests: libpapki-doc
+Suggests: libfsif-doc
 Description: cross-platform C++ file system library.
  File system abstraction library.
 
-Package: libpapki-doc
+Package: libfsif-doc
 Section: doc
 Architecture: all
 Depends: ${misc:Depends}
-Description: documentation for libpapki - file system abstraction library.
- For more details see description to libpapki-dev package.
+Description: documentation for libfsif - file system abstraction library.
+ For more details see description to libfsif-dev package.

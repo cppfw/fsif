@@ -4,7 +4,7 @@
 
 #include "tests.hpp"
 
-inline void test_papki_fs_file(){
+inline void test_fsif_fs_file(){
 	test_seek_forward::run();
 	test_list_dir_contents::run();
 	test_home_dir::run();

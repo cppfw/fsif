@@ -1,7 +1,7 @@
 {
-    "name": "papki",
+    "name": "fsif",
     "version": "$(version)",
-    "homepage": "https://github.com/cppfw/papki",
+    "homepage": "https://github.com/cppfw/fsif",
     "description": "filesystem abstraction in C++",
     "license": "MIT",
     "dependencies": [

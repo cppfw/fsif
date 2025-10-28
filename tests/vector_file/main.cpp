@@ -2,7 +2,7 @@
 
 
 int main(int /* argc */, const char** /* argv */){
-	test_papki_memory_file();
+	test_fsif_memory_file();
 
 	return 0;
 }

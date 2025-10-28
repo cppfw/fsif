@@ -1,5 +1,5 @@
 #include <utki/debug.hpp>
-#include "../../src/papki/vector_file.hpp"
+#include "../../src/fsif/vector_file.hpp"
 
 #include "tests.hpp"
 
@@ -8,7 +8,7 @@
 
 namespace test_basic_memory_file{
 void run(){
-	papki::vector_file f;
+	fsif::vector_file f;
 	utki::assert(!f.is_dir(), SL);
 	utki::assert(!f.is_open(), SL);
 	utki::assert(f.size() == 0, SL);
@@ -17,7 +17,7 @@ void run(){
 		std::array<uint8_t, 4> buf = {1, 2, 3, 4};
 		auto b = utki::make_span(buf);
 		
-		papki::file::guard file_guard(f, papki::mode::create);
+		fsif::file::guard file_guard(f, fsif::mode::create);
 		
 		f.write(b);
 	}
@@ -25,7 +25,7 @@ void run(){
 	{
 		std::array<uint8_t, 4> b{};
 		
-		papki::file::guard file_guard(f, papki::mode::read);
+		fsif::file::guard file_guard(f, fsif::mode::read);
 		
 		f.read(utki::make_span(b));
 		
