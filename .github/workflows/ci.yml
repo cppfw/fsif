@@ -533,6 +533,7 @@ jobs:
         config:
           - Debug
           - Release
+    name: vcpkg - ios | ${{ matrix.config }}
     steps:
     - name: workaround python2 and python3 issue when upgrading python
       run : |
