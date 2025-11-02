@@ -1,3 +1,9 @@
+libfsif (1.0.158) unstable; urgency=medium
+
+  * rename fs_file -> native_file
+
+ -- Ivan Gagis <igagis@gmail.com>  Sun, 02 Nov 2025 23:16:44 +0200
+
 libfsif (1.0.157) unstable; urgency=medium
 
   * first release after renaming papki->fsif
