@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <fsif/fs_file.hpp>
 
 int main(int argc, const char** argv){
