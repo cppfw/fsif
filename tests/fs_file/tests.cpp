@@ -1,7 +1,7 @@
 #include <utki/debug.hpp>
 #include <utki/types.hpp>
 
-#include "../../src/fsif/fs_file.hpp"
+#include "../../src/fsif/native_file.hpp"
 #include "../../src/fsif/root_dir.hpp"
 #include "../../src/fsif/util.hpp"
 
@@ -13,7 +13,7 @@
 
 namespace test_seek_forward{
 void run(){
-	fsif::fs_file f("test.file.txt");
+	fsif::native_file f("test.file.txt");
 	utki::assert(!f.is_dir(), SL);
 	utki::assert(!f.is_open(), SL);
 	
@@ -64,7 +64,7 @@ void run(){
 
 namespace test_list_dir_contents{
 void run(){
-	fsif::fs_file cur_dir("./");
+	fsif::native_file cur_dir("./");
 	fsif::file& f = cur_dir;
 	
 	std::vector<std::string> r = f.list_dir();
@@ -90,7 +90,7 @@ void run(){
 
 namespace test_home_dir{
 void run(){
-	std::string hd = fsif::fs_file::get_home_dir();
+	std::string hd = fsif::native_file::get_home_dir();
 	
 	utki::assert(hd.size() != 0, SL); // There is always a trailing '/' character, so make sure there is something else besides that.
 	utki::assert(fsif::is_dir(hd), SL);
@@ -103,7 +103,7 @@ void run(){
 
 namespace test_load_whole_file_to_memory{
 void run(){
-	fsif::root_dir f(std::make_unique<fsif::fs_file>(), "");
+	fsif::root_dir f(std::make_unique<fsif::native_file>(), "");
 	f.set_path("test.file.txt");
 	utki::assert(!f.is_dir(), SL);
 	utki::assert(!f.is_open(), SL);

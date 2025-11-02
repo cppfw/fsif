@@ -1,6 +1,6 @@
 #include "main.hpp"
 
-#include "../../src/fsif/fs_file.hpp"
+#include "../../src/fsif/native_file.hpp"
 
 #ifdef assert
 #	undef assert
@@ -12,7 +12,7 @@ int main(int /* argc */, const char** /* argv */){
 
 	// test file size
 	{
-		fsif::fs_file f("test.file.txt");
+		fsif::native_file f("test.file.txt");
 
 		auto size = f.size();
 

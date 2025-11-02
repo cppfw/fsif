@@ -45,7 +45,7 @@ namespace fsif {
  * @brief Native OS file system implementation of file interface.
  * Implementation of a fsif::file interface for native file system of the OS.
  */
-class fs_file : public file
+class native_file : public file
 {
 	mutable FILE* handle = nullptr;
 
@@ -77,21 +77,21 @@ public:
 	 * returned by path() method.
 	 * @param path_name - initial path to set passed to file constructor.
 	 */
-	fs_file(std::string_view path_name = std::string_view()) :
+	native_file(std::string_view path_name = std::string_view()) :
 		file(path_name)
 	{}
 
-	fs_file(const fs_file&) = delete;
-	fs_file& operator=(const fs_file&) = delete;
+	native_file(const native_file&) = delete;
+	native_file& operator=(const native_file&) = delete;
 
-	fs_file(fs_file&&) = delete;
-	fs_file& operator=(fs_file&&) = delete;
+	native_file(native_file&&) = delete;
+	native_file& operator=(native_file&&) = delete;
 
 	/**
 	 * @brief Destructor.
 	 * This destructor calls the close() method.
 	 */
-	~fs_file() noexcept override
+	~native_file() noexcept override
 	{
 		this->close();
 	}

@@ -1,6 +1,6 @@
 #include <utki/debug.hpp>
 #include "../../src/fsif/zip_file.hpp"
-#include "../../src/fsif/fs_file.hpp"
+#include "../../src/fsif/native_file.hpp"
 
 #include "tests.hpp"
 
@@ -8,7 +8,7 @@ namespace test_fsif_zip_file{
 void run(){
 	// list directory contents
 	{
-		fsif::zip_file zip_f(std::make_unique<fsif::fs_file>("test.zip"));
+		fsif::zip_file zip_f(std::make_unique<fsif::native_file>("test.zip"));
 		utki::assert(!zip_f.is_dir(), SL);
 		utki::assert(!zip_f.is_open(), SL);
 
@@ -51,7 +51,7 @@ void run(){
 
 	// reading file
 	{
-		fsif::zip_file zip_f(std::make_unique<fsif::fs_file>("test.zip"), "dir1/test2.txt");
+		fsif::zip_file zip_f(std::make_unique<fsif::native_file>("test.zip"), "dir1/test2.txt");
 		utki::assert(!zip_f.is_dir(), SL);
 		utki::assert(!zip_f.is_open(), SL);
 

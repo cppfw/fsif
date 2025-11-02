@@ -51,11 +51,11 @@ SOFTWARE.
 #	include <filesystem>
 #endif
 
-#include "fs_file.hpp"
+#include "native_file.hpp"
 
 using namespace fsif;
 
-void fs_file::open_internal(fsif::mode mode)
+void native_file::open_internal(fsif::mode mode)
 {
 	if (this->is_dir()) {
 		throw std::logic_error("path refers to a directory, directories can't be opened");
@@ -84,7 +84,7 @@ void fs_file::open_internal(fsif::mode mode)
 #endif
 	if (!this->handle) {
 		LOG([&](auto& o) {
-			o << "fs_file::open(): path() = " << this->path().c_str() << std::endl;
+			o << "native_file::open(): path() = " << this->path().c_str() << std::endl;
 		})
 		std::stringstream ss;
 		ss << "fopen(" << this->path().c_str() << ") failed";
@@ -92,7 +92,7 @@ void fs_file::open_internal(fsif::mode mode)
 	}
 }
 
-void fs_file::close_internal() const noexcept
+void native_file::close_internal() const noexcept
 {
 	ASSERT(this->handle)
 
@@ -101,7 +101,7 @@ void fs_file::close_internal() const noexcept
 	this->handle = nullptr;
 }
 
-size_t fs_file::read_internal(utki::span<uint8_t> buf) const
+size_t native_file::read_internal(utki::span<uint8_t> buf) const
 {
 	ASSERT(this->handle)
 	size_t num_bytes_read = fread(buf.begin(), 1, buf.size(), this->handle);
@@ -113,7 +113,7 @@ size_t fs_file::read_internal(utki::span<uint8_t> buf) const
 	return num_bytes_read;
 }
 
-size_t fs_file::write_internal(utki::span<const uint8_t> buf)
+size_t native_file::write_internal(utki::span<const uint8_t> buf)
 {
 	ASSERT(this->handle)
 	size_t bytes_written = fwrite(buf.begin(), 1, buf.size(), this->handle);
@@ -124,7 +124,7 @@ size_t fs_file::write_internal(utki::span<const uint8_t> buf)
 	return bytes_written;
 }
 
-size_t fs_file::seek_backward_internal(size_t num_bytes_to_seek) const
+size_t native_file::seek_backward_internal(size_t num_bytes_to_seek) const
 {
 	ASSERT(this->handle)
 
@@ -167,7 +167,7 @@ size_t fs_file::seek_backward_internal(size_t num_bytes_to_seek) const
 	return num_bytes_to_seek;
 }
 
-void fs_file::rewind_internal() const
+void native_file::rewind_internal() const
 {
 	if (!this->is_open()) {
 		throw std::logic_error("cannot rewind, file is not opened");
@@ -179,7 +179,7 @@ void fs_file::rewind_internal() const
 	}
 }
 
-bool fs_file::exists() const
+bool native_file::exists() const
 {
 	if (this->is_open()) { // file is opened => it exists
 		return true;
@@ -220,7 +220,7 @@ bool fs_file::exists() const
 	}
 }
 
-void fs_file::make_dir()
+void native_file::make_dir()
 {
 	if (this->is_open()) {
 		throw std::invalid_argument("cannot make directory when file is opened");
@@ -240,7 +240,7 @@ void fs_file::make_dir()
 #endif
 }
 
-std::string fs_file::get_home_dir()
+std::string native_file::get_home_dir()
 {
 	std::string ret;
 
@@ -286,10 +286,10 @@ std::string fs_file::get_home_dir()
 	return ret;
 }
 
-std::vector<std::string> fs_file::list_dir(size_t max_size) const
+std::vector<std::string> native_file::list_dir(size_t max_size) const
 {
 	if (!this->is_dir()) {
-		throw std::logic_error("fs_file::list_dir(): this is not a directory");
+		throw std::logic_error("native_file::list_dir(): this is not a directory");
 	}
 
 	std::vector<std::string> files;
@@ -324,7 +324,7 @@ std::vector<std::string> fs_file::list_dir(size_t max_size) const
 		pattern += '*';
 
 		LOG([&](auto& o) {
-			o << "fs_file::list_dir(): pattern = " << pattern << std::endl;
+			o << "native_file::list_dir(): pattern = " << pattern << std::endl;
 		})
 
 		WIN32_FIND_DATA wfd;
@@ -372,7 +372,7 @@ std::vector<std::string> fs_file::list_dir(size_t max_size) const
 
 		if (!pdir) {
 			std::stringstream ss;
-			ss << "fs_file::list_dir(): opendir() failure, error code = " << strerror(errno);
+			ss << "native_file::list_dir(): opendir() failure, error code = " << strerror(errno);
 			throw std::system_error(errno, std::generic_category(), ss.str());
 		}
 
@@ -391,7 +391,7 @@ std::vector<std::string> fs_file::list_dir(size_t max_size) const
 				do {
 					ret = closedir(this->pdir);
 					ASSERT(ret == 0 || errno == EINTR, [](auto& o) {
-						o << "fs_file::list_dir(): closedir() failed: " << strerror(errno);
+						o << "native_file::list_dir(): closedir() failed: " << strerror(errno);
 					})
 				} while (ret != 0 && errno == EINTR);
 			}
@@ -406,7 +406,7 @@ std::vector<std::string> fs_file::list_dir(size_t max_size) const
 			struct stat fileStats;
 			if (stat((this->path() + s).c_str(), &fileStats) < 0) {
 				std::stringstream ss;
-				ss << "fs_file::list_dir(): stat() failure, error code = " << strerror(errno);
+				ss << "native_file::list_dir(): stat() failure, error code = " << strerror(errno);
 				throw std::system_error(errno, std::system_category(), ss.str());
 			}
 
@@ -423,19 +423,19 @@ std::vector<std::string> fs_file::list_dir(size_t max_size) const
 		// check if we exited the while() loop because of readdir() failed
 		if (errno != 0) {
 			std::stringstream ss;
-			ss << "fs_file::list_dir(): readdir() failure, error code = " << strerror(errno);
+			ss << "native_file::list_dir(): readdir() failure, error code = " << strerror(errno);
 			throw std::system_error(errno, std::system_category(), ss.str());
 		}
 	}
 #	else
-#		error "fs_file::list_dir(): is not implemented yet for this os"
+#		error "native_file::list_dir(): is not implemented yet for this os"
 #	endif
 #endif
 
 	return files;
 }
 
-uint64_t fs_file::size() const
+uint64_t native_file::size() const
 {
 	if (this->is_dir()) {
 		throw std::logic_error("method size() is called on directory");
@@ -482,7 +482,7 @@ uint64_t fs_file::size() const
 #endif
 }
 
-std::unique_ptr<file> fs_file::spawn()
+std::unique_ptr<file> native_file::spawn()
 {
-	return std::make_unique<fs_file>();
+	return std::make_unique<native_file>();
 }

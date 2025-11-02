@@ -1,9 +1,9 @@
 #include <iostream>
 
-#include <fsif/fs_file.hpp>
+#include <fsif/native_file.hpp>
 
 int main(int argc, const char** argv){
-    fsif::fs_file dir("./");
+    fsif::native_file dir("./");
 
     std::cout << "num files = " << dir.list_dir().size() << std::endl;
 
