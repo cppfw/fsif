@@ -532,7 +532,7 @@ jobs:
       with:
         name: vcpkg_ios_${{ matrix.config }}_logs
         path: |
-          vcpkg-installation/buildtrees/
+          vcpkg-installation/buildtrees/${{ env.PACKAGE_NAME }}/
           build/vcpkg/**/*.log
 ##### conan - linux #####
   conan-linux:
