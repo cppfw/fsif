@@ -1,3 +1,9 @@
+libfsif (1.0.157) unstable; urgency=medium
+
+  * first release after renaming papki->fsif
+
+ -- Ivan Gagis <igagis@gmail.com>  Sun, 02 Nov 2025 23:03:28 +0200
+
 libfsif (1.0.156) unstable; urgency=medium
 
   * debian trixie build
