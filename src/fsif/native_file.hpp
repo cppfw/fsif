@@ -112,7 +112,7 @@ public:
 
 	std::vector<std::string> list_dir(size_t max_entries = 0) const override;
 
-	std::unique_ptr<file> spawn() override;
+	utki::unique_ref<file> spawn() override;
 };
 
 } // namespace fsif

@@ -82,7 +82,7 @@ public:
 
 	~span_file() noexcept override = default;
 
-	std::unique_ptr<file> spawn() override;
+	utki::unique_ref<file> spawn() override;
 
 protected:
 	void open_internal(fsif::mode io_mode) override;

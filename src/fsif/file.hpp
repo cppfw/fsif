@@ -34,6 +34,7 @@ SOFTWARE.
 #include <utki/config.hpp>
 #include <utki/debug.hpp>
 #include <utki/span.hpp>
+#include <utki/unique_ref.hpp>
 
 #include "util.hpp"
 
@@ -486,27 +487,25 @@ public:
 	 * object is in initial state.
 	 * @return Newly spawned file object.
 	 */
-	virtual std::unique_ptr<file> spawn() = 0;
+	virtual utki::unique_ref<file> spawn() = 0;
 
-	// NOTE: it must not be possible to modify the const file by spawning
-	// non-const file
-	//       object and setting the same path to it, so make const spawn()
-	//       overloads
-	std::unique_ptr<const file> spawn() const
+	// NOTE: it must not be possible to modify the const file by spawning non-const file
+	//       object and setting the same path to it, so make const spawn() overloads
+	utki::unique_ref<const file> spawn() const
 	{
 		// NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
 		return const_cast<file*>(this)->spawn();
 	}
 
-	std::unique_ptr<file> spawn(std::string path);
+	utki::unique_ref<file> spawn(std::string path);
 
-	std::unique_ptr<const file> spawn(std::string path) const
+	utki::unique_ref<const file> spawn(std::string path) const
 	{
 		// NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
 		return const_cast<file*>(this)->spawn(std::move(path));
 	}
 
-	std::unique_ptr<const file> spawn(std::string_view path) const
+	utki::unique_ref<const file> spawn(std::string_view path) const
 	{
 		// NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
 		return const_cast<file*>(this)->spawn(std::string(path));

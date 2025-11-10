@@ -482,7 +482,7 @@ uint64_t native_file::size() const
 #endif
 }
 
-std::unique_ptr<file> native_file::spawn()
+utki::unique_ref<file> native_file::spawn()
 {
-	return std::make_unique<native_file>();
+	return utki::make_unique<native_file>();
 }

@@ -143,12 +143,15 @@ long ZCALLBACK unzip_tell(
 
 } // namespace
 
-zip_file::zip_file(std::unique_ptr<fsif::file> underlying_zip_file, std::string_view path) :
+zip_file::zip_file(
+	utki::unique_ref<fsif::file> underlying_zip_file, //
+	std::string_view path
+) :
 	fsif::file(path),
 	underlying_zip_file(std::move(underlying_zip_file))
 {
 	zlib_filefunc_def ff;
-	ff.opaque = this->underlying_zip_file.operator->();
+	ff.opaque = &this->underlying_zip_file.get();
 	ff.zopen_file = &unzip_open;
 	ff.zclose_file = &unzip_close;
 	ff.zread_file = &unzip_read;
@@ -157,7 +160,7 @@ zip_file::zip_file(std::unique_ptr<fsif::file> underlying_zip_file, std::string_
 	ff.zerror_file = &unzip_error;
 	ff.ztell_file = &unzip_tell;
 
-	this->handle = unzOpen2(this->underlying_zip_file->path().c_str(), &ff);
+	this->handle = unzOpen2(this->underlying_zip_file.get().path().c_str(), &ff);
 
 	if (!this->handle) {
 		throw std::runtime_error("zip_file: opening zip file failed");

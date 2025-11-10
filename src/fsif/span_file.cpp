@@ -86,7 +86,7 @@ void span_file::rewind_internal() const
 	this->iter = this->data.begin();
 }
 
-std::unique_ptr<file> span_file::spawn()
+utki::unique_ref<file> span_file::spawn()
 {
-	return std::make_unique<span_file>(this->data);
+	return utki::make_unique<span_file>(this->data);
 }

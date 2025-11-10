@@ -189,10 +189,10 @@ void file::rewind_internal() const
 	const_cast<file*>(this)->open(m);
 }
 
-std::unique_ptr<file> file::spawn(std::string path)
+utki::unique_ref<file> file::spawn(std::string path)
 {
 	auto ret = this->spawn();
-	ret->set_path(std::move(path));
+	ret.get().set_path(std::move(path));
 	return ret;
 }
 

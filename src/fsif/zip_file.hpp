@@ -30,6 +30,7 @@ SOFTWARE.
 #include <memory>
 
 #include <utki/debug.hpp>
+#include <utki/unique_ref.hpp>
 
 #include "file.hpp"
 
@@ -38,12 +39,15 @@ namespace fsif {
 // TODO: doxygen
 class zip_file : public fsif::file
 {
-	std::unique_ptr<fsif::file> underlying_zip_file;
+	utki::unique_ref<fsif::file> underlying_zip_file;
 
 	void* handle = nullptr;
 
 public:
-	zip_file(std::unique_ptr<fsif::file> underlying_zip_file, std::string_view path = std::string_view());
+	zip_file(
+		utki::unique_ref<fsif::file> underlying_zip_file, //
+		std::string_view path = std::string_view()
+	);
 
 	zip_file(const zip_file&) = delete;
 	zip_file& operator=(const zip_file&) = delete;
@@ -59,11 +63,13 @@ public:
 	bool exists() const override;
 	std::vector<std::string> list_dir(size_t max_entries = 0) const override;
 
-	std::unique_ptr<fsif::file> spawn() override
+	utki::unique_ref<fsif::file> spawn() override
 	{
-		std::unique_ptr<fsif::file> zf = this->underlying_zip_file->spawn();
-		zf->set_path(this->underlying_zip_file->path());
-		return std::make_unique<zip_file>(std::move(zf));
+		return utki::make_unique<zip_file>( //
+			this->underlying_zip_file.get().spawn( //
+				this->underlying_zip_file.get().path()
+			)
+		);
 	}
 };
 

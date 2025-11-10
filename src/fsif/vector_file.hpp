@@ -70,9 +70,9 @@ public:
 		return this->data.size();
 	}
 
-	std::unique_ptr<file> spawn() override
+	utki::unique_ref<file> spawn() override
 	{
-		return std::make_unique<vector_file>();
+		return utki::make_unique<vector_file>();
 	}
 
 	/**
