@@ -80,7 +80,11 @@ class root_dir : public file
 
 	void init()
 	{
-		this->file::set_path_internal(std::string(this->base_file.constant.get().path()));
+		this->file::set_path_internal(std::string(
+			// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+			this->base_file.constant.get().path()
+		));
+		// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
 		this->base_file.variable.get().set_path(this->root_directory + this->path());
 	}
 
@@ -128,62 +132,74 @@ private:
 	void set_path_internal(std::string path_name) const override
 	{
 		this->file::set_path_internal(std::move(path_name));
+		// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
 		this->base_file.constant.get().set_path(this->root_directory + this->path());
 	}
 
 	void open_internal(fsif::mode io_mode) override
 	{
+		// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
 		this->base_file.variable.get().open(io_mode);
 	}
 
 	void close_internal() const noexcept override
 	{
+		// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
 		this->base_file.constant.get().close();
 	}
 
 	std::vector<std::string> list_dir(size_t max_entries = 0) const override
 	{
+		// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
 		return this->base_file.constant.get().list_dir(max_entries);
 	}
 
 	size_t read_internal(utki::span<uint8_t> buf) const override
 	{
+		// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
 		return this->base_file.constant.get().read(buf);
 	}
 
 	size_t write_internal(utki::span<const uint8_t> buf) override
 	{
+		// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
 		return this->base_file.variable.get().write(buf);
 	}
 
 	size_t seek_forward_internal(size_t num_bytes_to_seek) const override
 	{
+		// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
 		return this->base_file.constant.get().seek_forward(num_bytes_to_seek);
 	}
 
 	size_t seek_backward_internal(size_t num_bytes_to_seek) const override
 	{
+		// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
 		return this->base_file.constant.get().seek_backward(num_bytes_to_seek);
 	}
 
 	void rewind_internal() const override
 	{
+		// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
 		this->base_file.constant.get().rewind();
 	}
 
 	void make_dir() override
 	{
+		// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
 		this->base_file.variable.get().make_dir();
 	}
 
 	bool exists() const override
 	{
+		// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
 		return this->base_file.constant.get().exists();
 	}
 
 	utki::unique_ref<file> spawn() override
 	{
 		return utki::make_unique<root_dir>(
+			// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
 			this->base_file.variable.get().spawn(), //
 			this->root_directory
 		);
