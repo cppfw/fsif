@@ -103,7 +103,7 @@ void run(){
 
 namespace test_load_whole_file_to_memory{
 void run(){
-	fsif::root_dir f(std::make_unique<fsif::native_file>(), "");
+	fsif::root_dir f(utki::make_unique<fsif::native_file>(), "");
 	f.set_path("test.file.txt");
 	utki::assert(!f.is_dir(), SL);
 	utki::assert(!f.is_open(), SL);
