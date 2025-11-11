@@ -1,3 +1,9 @@
+libfsif (1.0.159) unstable; urgency=medium
+
+  * use utki::unique_ref
+
+ -- Ivan Gagis <igagis@gmail.com>  Wed, 12 Nov 2025 01:33:52 +0200
+
 libfsif (1.0.158) unstable; urgency=medium
 
   * rename fs_file -> native_file
