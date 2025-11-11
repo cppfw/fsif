@@ -135,7 +135,7 @@ size_t native_file::seek_backward_internal(size_t num_bytes_to_seek) const
 
 	using fseek_offset_type = long int;
 	const auto max_offset = size_t(((unsigned long int)(-1)) >> 1);
-	utki::assert((size_t(1) << ((sizeof(fseek_offset_type) * 8) - 1)) - 1 == max_offset, SL);
+	utki::assert((size_t(1) << ((sizeof(fseek_offset_type) * utki::byte_bits) - 1)) - 1 == max_offset, SL);
 	static_assert(size_t(-(-fseek_offset_type(max_offset))) == max_offset, "error");
 
 	using std::min;
