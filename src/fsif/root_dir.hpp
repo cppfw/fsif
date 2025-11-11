@@ -37,7 +37,7 @@ namespace fsif {
 // TODO: doxygen
 class root_dir : public file
 {
-	union base_file_union{
+	union base_file_union {
 		utki::unique_ref<file> variable;
 		utki::unique_ref<const file> constant;
 
@@ -55,18 +55,22 @@ class root_dir : public file
 		base_file_union(base_file_union&&) = delete;
 		base_file_union& operator=(base_file_union&&) = delete;
 
-		~base_file_union(){
-			// doesn't matter on which memeber to call the destrcutor, as the difference is only in constness
+		~base_file_union()
+		{
+			// doesn't matter on which memeber to call the destrcutor, as the
+			// difference is only in constness
 			this->variable.~unique_ref();
 		}
 	} base_file;
 
 	std::string root_directory;
 
-	// This constructor is private because the object it constructs can only be used in const context.
+	// This constructor is private because the object it constructs can only be
+	// used in const context.
 	root_dir(
 		utki::unique_ref<const file> base_file, //
-		std::string root_directory
+		std::string root_directory,
+		bool // dummy parameter to disambiguate from the another constructor
 	) :
 		base_file(std::move(base_file)),
 		root_directory(std::move(root_directory))
@@ -74,10 +78,12 @@ class root_dir : public file
 		this->init();
 	}
 
-	void init(){
+	void init()
+	{
 		this->file::set_path_internal(std::string(this->base_file.constant.get().path()));
 		this->base_file.variable.get().set_path(this->root_directory + this->path());
 	}
+
 public:
 	/**
 	 * @param base_file - a file to wrap.
@@ -101,19 +107,13 @@ public:
 	 * trailing '/' character.
 	 * @return constant root_dir.
 	 */
-	static utki::unique_ref<const root_dir> make(
-		utki::unique_ref<const file> base_file,
-		std::string root_directory
-	)
+	static utki::unique_ref<const root_dir> make(utki::unique_ref<const file> base_file, std::string root_directory)
 	{
-		return utki::unique_ref(
-			std::unique_ptr<const root_dir>(
-				new root_dir(
-					std::move(base_file),
-					std::move(root_directory)
-				)
-			)
-		);
+		return utki::unique_ref(std::unique_ptr<const root_dir>(new root_dir(
+			std::move(base_file),
+			std::move(root_directory),
+			false // dummy parameter to disambiguate from the another constructor
+		)));
 	}
 
 	root_dir(const root_dir&) = delete;

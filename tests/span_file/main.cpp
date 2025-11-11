@@ -1,5 +1,7 @@
 #include "../../src/fsif/span_file.hpp"
 
+#include <utki/debug.hpp>
+
 // NOLINTNEXTLINE(bugprone-exception-escape, "we want uncaught exceptions to fail the tests")
 int main(int /* argc */, const char** /* argv */){
 	// test read only span_file
@@ -56,9 +58,8 @@ int main(int /* argc */, const char** /* argv */){
 		}
 
 		auto file2 = file.spawn();
-		utki::assert(file2, SL);
 
-		auto res = file2->load();
+		auto res = file2.get().load();
 
 		file.close();
 

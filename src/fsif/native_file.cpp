@@ -45,8 +45,8 @@ SOFTWARE.
 #include <sstream>
 #include <vector>
 
-// On iOS < 13.0 we use 'dirent' instead of std::filesystem, since std::filesystem
-// becomes available only from iOS 13.0.
+// On iOS < 13.0 we use 'dirent' instead of std::filesystem, since
+// std::filesystem becomes available only from iOS 13.0.
 #if CFG_OS_NAME != CFG_OS_NAME_IOS || CFG_OS_IOS_DEPLOYMENT_TARGET >= 130000
 #	include <filesystem>
 #endif
@@ -128,8 +128,7 @@ size_t native_file::seek_backward_internal(size_t num_bytes_to_seek) const
 {
 	ASSERT(this->handle)
 
-	// NOTE: fseek() accepts 'long int' as offset argument which is signed and can
-	// be
+	// NOTE: fseek() accepts 'long int' as offset argument which is signed and can be
 	//       less than size_t value passed as argument to this function.
 	//       Therefore, do several seek operations with smaller offset if
 	//       necessary.
@@ -230,8 +229,8 @@ void native_file::make_dir()
 		throw std::invalid_argument("invalid directory name, should end with '/'");
 	}
 
-// On iOS the std::filesystem is available only starting from iOS 13.0, so for iOS < 13.0 we do not support directory
-// creation.
+// On iOS the std::filesystem is available only starting from iOS 13.0, so for
+// iOS < 13.0 we do not support directory creation.
 #if (CFG_OS == CFG_OS_LINUX || CFG_OS == CFG_OS_MACOSX || CFG_OS == CFG_OS_WINDOWS) && \
 	(CFG_OS_NAME != CFG_OS_NAME_IOS || CFG_OS_IOS_DEPLOYMENT_TARGET >= 130000)
 	std::filesystem::create_directories(this->path());
@@ -295,9 +294,9 @@ std::vector<std::string> native_file::list_dir(size_t max_size) const
 	std::vector<std::string> files;
 
 // For all systems except iOS < 13.0 we use new implementation via std::filesystem.
-// On iOS the std::filesystem is available only starting from iOS 13.0 while it
-// is still desired to support iOS 11.0 at least, so for iOS < 13.0 we fall back to old
-// implementation via 'dirent.h'.
+// On iOS the std::filesystem is available only starting from iOS 13.0,
+// while it is still desired to support iOS 11.0 at least, so for iOS < 13.0
+// we fall back to old implementation via 'dirent.h'.
 #if CFG_OS_NAME != CFG_OS_NAME_IOS || CFG_OS_IOS_DEPLOYMENT_TARGET >= 130000
 	std::filesystem::directory_iterator iter(this->path());
 
@@ -400,8 +399,10 @@ std::vector<std::string> native_file::list_dir(size_t max_size) const
 		errno = 0;
 		while (dirent* pent = readdir(pdir)) {
 			std::string s(pent->d_name);
-			if (s == "." || s == "..")
-				continue; // do not add ./ and ../ directories, we are not interested in them
+			if (s == "." || s == "..") {
+				// do not add ./ and ../ directories, we are not interested in them
+				continue;
+			}
 
 			struct stat fileStats;
 			if (stat((this->path() + s).c_str(), &fileStats) < 0) {
@@ -410,8 +411,10 @@ std::vector<std::string> native_file::list_dir(size_t max_size) const
 				throw std::system_error(errno, std::system_category(), ss.str());
 			}
 
-			if (fileStats.st_mode & S_IFDIR) // if this entry is a directory append '/' symbol to its end
+			if (fileStats.st_mode & S_IFDIR) {
+				// if this entry is a directory append '/' symbol to its end
 				s += "/";
+			}
 
 			files.push_back(s);
 

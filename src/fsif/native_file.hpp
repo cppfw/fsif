@@ -58,8 +58,7 @@ protected:
 
 	size_t write_internal(utki::span<const uint8_t> buf) override;
 
-	// NOTE: use default implementation of seek_forward() because of the problems
-	// with
+	// NOTE: use default implementation of seek_forward() because of the problems with
 	//       fseek(), as it can set file pointer beyond the end of file.
 
 	size_t seek_backward_internal(size_t num_bytes_to_seek) const override;

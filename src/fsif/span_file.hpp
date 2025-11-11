@@ -76,8 +76,11 @@ public:
 	{}
 
 	span_file(utki::span<const char> data) :
-		// NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-		span_file(utki::make_span(reinterpret_cast<const uint8_t*>(data.data()), data.size()))
+		span_file(utki::make_span(
+			// NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
+			reinterpret_cast<const uint8_t*>(data.data()),
+			data.size()
+		))
 	{}
 
 	~span_file() noexcept override = default;

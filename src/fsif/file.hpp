@@ -443,11 +443,11 @@ protected:
 public:
 	/**
 	 * @brief Create directory.
-	 * If this file instance is a directory then try to create that directory on the
-	 * file system. Not all file systems are writable, so not all of them support
-	 * directory creation.
-	 * The function will create all intermediate directories of the path if needed.
-	 * If the directory already exists then nothing is done.
+	 * If this file instance is a directory then try to create that directory on
+	 * the file system. Not all file systems are writable, so not all of them
+	 * support directory creation. The function will create all intermediate
+	 * directories of the path if needed. If the directory already exists then
+	 * nothing is done.
 	 * @throw std::logic_error - if file is opened.
 	 */
 	virtual void make_dir();
@@ -489,7 +489,8 @@ public:
 	virtual utki::unique_ref<file> spawn() = 0;
 
 	// NOTE: it must not be possible to modify the const file by spawning non-const file
-	//       object and setting the same path to it, so make const spawn() overloads
+	//       object and setting the same path to it, so make const spawn()
+	//       overloads
 	utki::unique_ref<const file> spawn() const
 	{
 		// NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
@@ -514,27 +515,23 @@ public:
 	/**
 	 * @brief file guard class.
 	 * Use this class to open the file within the particular scope.
-	 * As the file guard object goes out of the scope it will close the file in
-	 *its destructor. Usage:
+	 * As the file guard object goes out of the scope it will close the file in its destructor.
+	 * Usage:
 	 * @code
-	 *	file& fi; // assume we have some fsif::file object visible in current
-	 *scope.
+	 *	file& fi; // assume we have some fsif::file object visible in current scope.
 	 *	...
 	 *	{
 	 *		// assume the 'fi' is closed.
-	 *		// Let's create the file guard object. This will open the file
-	 *'fi'
-	 *		//  for reading by calling fi.open(fsif::file::mode::read)
-	 *method. fsif::file::guard file_guard(fi, fsif::file::mode::read);
+	 *		// Let's create the file guard object. This will open the file 'fi'
+	 *		// for reading by calling fi.open(fsif::file::mode::read) method.
+	 *      fsif::file::guard file_guard(fi, fsif::file::mode::read);
 	 *
 	 *		...
 	 *		// do some reading
 	 *		fi.read(...);
 	 *
-	 *		// going out of scope will destroy the 'file_guard' object. In
-	 *turn,
-	 *		// it will automatically close the file 'fi' in its destructor
-	 *by
+	 *		// going out of scope will destroy the 'file_guard' object. In turn,
+	 *		// it will automatically close the file 'fi' in its destructor by
 	 *		// calling fi.close() method.
 	 *	}
 	 * @endcode

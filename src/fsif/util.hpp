@@ -33,7 +33,8 @@ namespace fsif {
 
 /**
  * @brief Check if path represents a directory.
- * Empty path is not considered a directory, so the function will return false for empty path.
+ * Empty path is not considered a directory, so the function will return false
+ * for empty path.
  * @param path_name - path name to check.
  * @return true if path name ends with forward slash character '/'.
  * @return false otherwise.
@@ -101,8 +102,9 @@ std::string as_dir(std::string_view path);
 
 /**
  * @brief Convert path to a file path.
- * Path to a file differs from a path to a directory by that it does not have the trailing slash '/' character.
- * This function removes the trailing slash character from a path if it is present.
+ * Path to a file differs from a path to a directory by that it does not have
+ * the trailing slash '/' character. This function removes the trailing slash
+ * character from a path if it is present.
  * @param path - path to convert to a file path.
  * @return A path to a file.
  */
