@@ -146,16 +146,15 @@ public:
 	}
 
 protected:
-	// TODO: pass string_view?
-	virtual void set_path_internal(std::string&& path_name) const
+	virtual void set_path_internal(std::string path_name) const
 	{
 		this->cur_path = std::move(path_name);
 	}
 
 public:
 	/**
-	 * @brief Get the current path being held by this file instance.
-	 * @return The path this file instance holds.
+	 * @brief Get the current file path.
+	 * @return The path this file instance points to.
 	 */
 	const std::string& path() const noexcept
 	{
@@ -193,11 +192,11 @@ public:
 	/**
 	 * @brief Get file name without suffix.
 	 * Returns a string containing the file path without suffix, everything that
-	 * goes after the last dot character ('.') is trimmed, including the dot
+	 * goes after the last dot character ('.') is trimmed away, including the dot
 	 * character. I.e. if the file path is '/home/user/some.file.txt' then the
 	 * return value will be '/home/user/some.file'. Note, that on *nix systems if
 	 * the file name starts with a dot then this file is treated as hidden, in
-	 * that case it is thought that the file has no suffix. I.e., for example , if
+	 * this case it is thought that the file has no suffix. I.e., for example, if
 	 * the file path is '/home/user/.myfile' then the file has no suffix and this
 	 * function will return same string, i.e. '/home/user/.myfile'. Although, if
 	 * the file path is '/home/user/.myfile.txt' then the file does have a suffix

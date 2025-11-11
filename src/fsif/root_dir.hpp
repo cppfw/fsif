@@ -63,6 +63,7 @@ class root_dir : public file
 
 	std::string root_directory;
 
+	// This constructor is private because the object it constructs can only be used in const context.
 	root_dir(
 		utki::unique_ref<const file> base_file, //
 		std::string root_directory
@@ -124,8 +125,7 @@ public:
 	~root_dir() override = default;
 
 private:
-	// TODO: remove the &&
-	void set_path_internal(std::string&& path_name) const override
+	void set_path_internal(std::string path_name) const override
 	{
 		this->file::set_path_internal(std::move(path_name));
 		this->base_file.constant.get().set_path(this->root_directory + this->path());
