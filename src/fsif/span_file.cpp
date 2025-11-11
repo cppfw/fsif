@@ -44,40 +44,76 @@ void span_file::open_internal(fsif::mode io_mode)
 
 size_t span_file::read_internal(utki::span<uint8_t> buf) const
 {
-	ASSERT(this->iter <= this->data.end())
+	utki::assert(this->iter <= this->data.end(), SL);
 	size_t num_bytes_read = std::min(buf.size(), size_t(this->data.end() - this->iter));
 	auto end = utki::next(this->iter, num_bytes_read);
 	std::copy(this->iter, end, buf.begin());
 	this->iter = end;
-	ASSERT(utki::overlaps(this->data, &*this->iter) || this->iter == this->data.end())
+	utki::assert(
+		this->iter == this->data.end() ||
+			utki::overlaps(
+				this->data,
+				// this->iter is not an end iterator here because it was checked above,
+				// so it is safe to dereference it
+				&*this->iter
+			),
+		SL
+	);
 	return num_bytes_read;
 }
 
 size_t span_file::write_internal(utki::span<const uint8_t> buf)
 {
-	ASSERT(this->iter <= this->data.end())
+	utki::assert(this->iter <= this->data.end(), SL);
 	size_t num_bytes_written = std::min(buf.size_bytes(), size_t(this->data.end() - this->iter));
 	std::copy(buf.begin(), utki::next(buf.begin(), num_bytes_written), this->iter);
 	utki::next(this->iter, num_bytes_written);
-	ASSERT(utki::overlaps(this->data, &*this->iter) || this->iter == this->data.end())
+	utki::assert(
+		this->iter == this->data.end() ||
+			utki::overlaps(
+				this->data,
+				// this->iter is not an end iterator here because it was checked above,
+				// so it is safe to dereference it
+				&*this->iter
+			),
+		SL
+	);
 	return num_bytes_written;
 }
 
 size_t span_file::seek_forward_internal(size_t num_bytes_to_seek) const
 {
-	ASSERT(this->iter <= this->data.end())
+	utki::assert(this->iter <= this->data.end(), SL);
 	num_bytes_to_seek = std::min(size_t(this->data.end() - this->iter), num_bytes_to_seek);
 	this->iter += num_bytes_to_seek;
-	ASSERT(utki::overlaps(this->data, &*this->iter) || this->iter == this->data.end())
+	utki::assert(
+		this->iter == this->data.end() ||
+			utki::overlaps(
+				this->data,
+				// this->iter is not an end iterator here because it was checked above,
+				// so it is safe to dereference it
+				&*this->iter
+			),
+		SL
+	);
 	return num_bytes_to_seek;
 }
 
 size_t span_file::seek_backward_internal(size_t num_bytes_to_seek) const
 {
-	ASSERT(this->iter >= this->data.begin())
+	utki::assert(this->iter >= this->data.begin(), SL);
 	num_bytes_to_seek = std::min(size_t(this->iter - this->data.begin()), num_bytes_to_seek);
 	this->iter -= num_bytes_to_seek;
-	ASSERT(utki::overlaps(this->data, &*this->iter) || this->iter == this->data.end())
+	utki::assert(
+		this->iter == this->data.end() ||
+			utki::overlaps(
+				this->data,
+				// this->iter is not an end iterator here because it was checked above,
+				// so it is safe to dereference it
+				&*this->iter
+			),
+		SL
+	);
 	return num_bytes_to_seek;
 }
 

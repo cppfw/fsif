@@ -106,7 +106,7 @@ public:
 	// NOLINTNEXTLINE(modernize-use-equals-default, "the destructor is not trivial in DEBUG build config")
 	virtual ~file() noexcept
 	{
-		ASSERT(!this->is_open())
+		utki::assert(!this->is_open(), SL);
 	}
 
 	/**

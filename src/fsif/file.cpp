@@ -69,7 +69,7 @@ bool file::is_dir() const noexcept
 		return false;
 	}
 
-	ASSERT(this->path().size() > 0)
+	utki::assert(this->path().size() > 0, SL);
 	if (this->path().back() == '/') {
 		return true;
 	}
@@ -138,9 +138,9 @@ size_t file::seek_forward_internal(size_t num_bytes_to_seek) const
 		size_t cur_num_to_read = num_bytes_to_seek - num_bytes_read;
 		cur_num_to_read = std::min(cur_num_to_read, buf.size()); // clamp top
 		size_t res = this->read(utki::make_span(&*buf.begin(), cur_num_to_read));
-		ASSERT(num_bytes_read < num_bytes_to_seek)
-		ASSERT(num_bytes_to_seek >= res)
-		ASSERT(num_bytes_read <= num_bytes_to_seek - res)
+		utki::assert(num_bytes_read < num_bytes_to_seek, SL);
+		utki::assert(num_bytes_to_seek >= res, SL);
+		utki::assert(num_bytes_read <= num_bytes_to_seek - res, SL);
 		num_bytes_read += res;
 
 		if (res != cur_num_to_read) { // if end of file reached
@@ -157,7 +157,7 @@ size_t file::seek_backward(size_t num_bytes_to_seek) const
 		throw std::logic_error("seek_backward(): file is not opened");
 	}
 	size_t ret = this->seek_backward_internal(num_bytes_to_seek);
-	ASSERT(ret <= this->current_pos)
+	utki::assert(ret <= this->current_pos, SL);
 	this->current_pos -= ret;
 	return ret;
 }
@@ -212,12 +212,12 @@ std::vector<uint8_t> file::load(size_t max_bytes_to_load) const
 		auto num_bytes_to_read = std::min(max_bytes_to_load, read_chunk_size);
 		ret.resize(ret.size() + num_bytes_to_read);
 		auto n = this->read(utki::make_span(&ret[num_bytes_read], num_bytes_to_read));
-		ASSERT(n <= num_bytes_to_read)
+		utki::assert(n <= num_bytes_to_read, SL);
 		if (n != num_bytes_to_read) {
 			ret.resize(num_bytes_read + n);
 			return ret;
 		}
-		ASSERT(max_bytes_to_load >= num_bytes_to_read)
+		utki::assert(max_bytes_to_load >= num_bytes_to_read, SL);
 		max_bytes_to_load -= num_bytes_to_read;
 	}
 
@@ -239,7 +239,7 @@ bool file::exists() const
 	}
 
 	// try opening and closing the file to find out if it exists or not
-	ASSERT(!this->is_open())
+	utki::assert(!this->is_open(), SL);
 	try {
 		file::guard file_guard(
 			*this, //

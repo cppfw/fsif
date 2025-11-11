@@ -49,9 +49,9 @@ std::string fsif::not_dir(std::string_view path_name)
 		return std::string(path_name);
 	}
 
-	ASSERT(slash_pos > 0)
-	ASSERT(path_name.size() > 0)
-	ASSERT(path_name.size() >= slash_pos + 1)
+	utki::assert(slash_pos > 0, SL);
+	utki::assert(path_name.size() > 0, SL);
+	utki::assert(path_name.size() >= slash_pos + 1, SL);
 
 	return std::string(path_name.substr(slash_pos + 1));
 }
@@ -63,9 +63,9 @@ std::string fsif::dir(std::string_view path_name)
 		return {};
 	}
 
-	ASSERT(slash_pos > 0)
-	ASSERT(path_name.size() > 0)
-	ASSERT(path_name.size() >= slash_pos + 1)
+	utki::assert(slash_pos > 0, SL);
+	utki::assert(path_name.size() > 0, SL);
+	utki::assert(path_name.size() >= slash_pos + 1, SL);
 
 	return std::string(path_name.substr(0, slash_pos + 1));
 }
@@ -76,9 +76,9 @@ std::string fsif::suffix(std::string_view path_name)
 	if (dot_pos == std::string::npos || dot_pos == 0) { // NOTE: dot_pos is 0 for hidden files in *nix systems
 		return {};
 	} else {
-		ASSERT(dot_pos > 0)
-		ASSERT(path_name.size() > 0)
-		ASSERT(path_name.size() >= dot_pos + 1)
+		utki::assert(dot_pos > 0, SL);
+		utki::assert(path_name.size() > 0, SL);
+		utki::assert(path_name.size() >= dot_pos + 1, SL);
 
 		// check for hidden file on *nix systems
 		if (path_name[dot_pos - 1] == '/') {
@@ -87,7 +87,7 @@ std::string fsif::suffix(std::string_view path_name)
 
 		return std::string(path_name.substr(dot_pos + 1));
 	}
-	ASSERT(false)
+	utki::assert(false, SL);
 }
 
 std::string fsif::not_suffix(std::string_view path_name)
@@ -96,9 +96,9 @@ std::string fsif::not_suffix(std::string_view path_name)
 	if (dot_pos == std::string::npos || dot_pos == 0) { // NOTE: dot_pos is 0 for hidden files in *nix systems
 		return std::string(path_name);
 	} else {
-		ASSERT(dot_pos > 0)
-		ASSERT(path_name.size() > 0)
-		ASSERT(path_name.size() >= dot_pos + 1)
+		utki::assert(dot_pos > 0, SL);
+		utki::assert(path_name.size() > 0, SL);
+		utki::assert(path_name.size() >= dot_pos + 1, SL);
 
 		// check for hidden file on *nix systems
 		if (path_name[dot_pos - 1] == '/') {
@@ -107,7 +107,7 @@ std::string fsif::not_suffix(std::string_view path_name)
 
 		return std::string(path_name.substr(0, dot_pos));
 	}
-	ASSERT(false)
+	utki::assert(false, SL);
 }
 
 std::string fsif::as_dir(std::string_view path)

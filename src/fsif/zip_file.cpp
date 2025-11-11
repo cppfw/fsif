@@ -89,9 +89,13 @@ uLong ZCALLBACK unzip_write(
 	uLong /* size */
 )
 {
-	ASSERT(false, [](auto& o) {
-		o << "Writing ZIP files is not supported";
-	})
+	utki::assert(
+		false,
+		[](auto& o) {
+			o << "Writing ZIP files is not supported";
+		},
+		SL
+	);
 	return 0;
 }
 
@@ -172,7 +176,7 @@ zip_file::~zip_file() noexcept
 	this->close(); // make sure there is no file opened inside zip file
 
 	if (unzClose(this->handle) != UNZ_OK) {
-		ASSERT(false)
+		utki::assert(false, SL);
 	}
 }
 
@@ -204,21 +208,25 @@ void zip_file::open_internal(fsif::mode mode)
 void zip_file::close_internal() const noexcept
 {
 	if (unzCloseCurrentFile(this->handle) == UNZ_CRCERROR) {
-		ASSERT(false, [](auto& o) {
-			o << "zip_file::close(): CRC is not good" << std::endl;
-		})
+		utki::assert(
+			false,
+			[](auto& o) {
+				o << "zip_file::close(): CRC is not good" << std::endl;
+			},
+			SL
+		);
 	}
 }
 
 size_t zip_file::read_internal(utki::span<uint8_t> buf) const
 {
-	ASSERT(buf.size() <= unsigned(-1))
+	utki::assert(buf.size() <= std::numeric_limits<unsigned>::max(), SL);
 	int num_bytes_read = unzReadCurrentFile(this->handle, buf.begin(), unsigned(buf.size()));
 	if (num_bytes_read < 0) {
 		throw std::runtime_error("zip_file::Read(): file reading failed");
 	}
 
-	ASSERT(num_bytes_read >= 0)
+	utki::assert(num_bytes_read >= 0, SL);
 	return size_t(num_bytes_read);
 }
 
@@ -246,7 +254,7 @@ std::vector<std::string> zip_file::list_dir(size_t max_entries) const
 	}
 
 	// if path refers to directory then there should be no files opened
-	ASSERT(!this->is_open())
+	utki::assert(!this->is_open(), SL);
 
 	if (!this->handle) {
 		throw std::logic_error("zip_file::list_dir(): zip file is not opened");
@@ -296,7 +304,7 @@ std::vector<std::string> zip_file::list_dir(size_t max_entries) const
 				continue;
 			}
 
-			ASSERT(filename.size() > cur_path.size())
+			utki::assert(filename.size() > cur_path.size(), SL);
 			std::string subfilename(filename, cur_path.size(), filename.size() - cur_path.size());
 
 			size_t slash_pos = subfilename.find_first_of('/');
@@ -307,7 +315,7 @@ std::vector<std::string> zip_file::list_dir(size_t max_entries) const
 			}
 
 			// if we get here then we need to add a directory
-			ASSERT(subfilename.size() >= slash_pos + 1)
+			utki::assert(subfilename.size() >= slash_pos + 1, SL);
 			if (slash_pos == subfilename.size() - 1) {
 				files.push_back(std::move(subfilename));
 			}

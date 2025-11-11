@@ -94,7 +94,7 @@ void native_file::open_internal(fsif::mode mode)
 
 void native_file::close_internal() const noexcept
 {
-	ASSERT(this->handle)
+	utki::assert(this->handle, SL);
 
 	// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
 	fclose(this->handle);
@@ -103,7 +103,7 @@ void native_file::close_internal() const noexcept
 
 size_t native_file::read_internal(utki::span<uint8_t> buf) const
 {
-	ASSERT(this->handle)
+	utki::assert(this->handle, SL);
 	size_t num_bytes_read = fread(buf.begin(), 1, buf.size(), this->handle);
 	if (num_bytes_read != buf.size()) { // something happened
 		if (!feof(this->handle)) {
@@ -115,7 +115,7 @@ size_t native_file::read_internal(utki::span<uint8_t> buf) const
 
 size_t native_file::write_internal(utki::span<const uint8_t> buf)
 {
-	ASSERT(this->handle)
+	utki::assert(this->handle, SL);
 	size_t bytes_written = fwrite(buf.begin(), 1, buf.size(), this->handle);
 	if (bytes_written != buf.size()) { // something bad has happened
 		throw std::runtime_error("fwrite error");
@@ -126,7 +126,7 @@ size_t native_file::write_internal(utki::span<const uint8_t> buf)
 
 size_t native_file::seek_backward_internal(size_t num_bytes_to_seek) const
 {
-	ASSERT(this->handle)
+	utki::assert(this->handle, SL);
 
 	// NOTE: fseek() accepts 'long int' as offset argument which is signed and can be
 	//       less than size_t value passed as argument to this function.
@@ -135,14 +135,14 @@ size_t native_file::seek_backward_internal(size_t num_bytes_to_seek) const
 
 	using fseek_offset_type = long int;
 	const auto max_offset = size_t(((unsigned long int)(-1)) >> 1);
-	ASSERT((size_t(1) << ((sizeof(fseek_offset_type) * 8) - 1)) - 1 == max_offset)
+	utki::assert((size_t(1) << ((sizeof(fseek_offset_type) * 8) - 1)) - 1 == max_offset, SL);
 	static_assert(size_t(-(-fseek_offset_type(max_offset))) == max_offset, "error");
 
 	using std::min;
 	num_bytes_to_seek = min(num_bytes_to_seek, this->cur_pos()); // clamp top
 
 	for (size_t num_bytes_left = num_bytes_to_seek; num_bytes_left != 0;) {
-		ASSERT(num_bytes_left <= num_bytes_to_seek)
+		utki::assert(num_bytes_left <= num_bytes_to_seek, SL);
 
 		fseek_offset_type offset = 0;
 		if (num_bytes_left > max_offset) {
@@ -151,14 +151,14 @@ size_t native_file::seek_backward_internal(size_t num_bytes_to_seek) const
 			offset = fseek_offset_type(num_bytes_left);
 		}
 
-		ASSERT(offset > 0)
+		utki::assert(offset > 0, SL);
 
 		if (fseek(this->handle, -offset, SEEK_CUR) != 0) {
 			throw std::runtime_error("fseek() failed");
 		}
 
-		ASSERT(size_t(offset) < size_t(-1))
-		ASSERT(num_bytes_left >= size_t(offset))
+		utki::assert(size_t(offset) < size_t(-1), SL);
+		utki::assert(num_bytes_left >= size_t(offset), SL);
 
 		num_bytes_left -= size_t(offset);
 	}
@@ -172,7 +172,7 @@ void native_file::rewind_internal() const
 		throw std::logic_error("cannot rewind, file is not opened");
 	}
 
-	ASSERT(this->handle)
+	utki::assert(this->handle, SL);
 	if (fseek(this->handle, 0, SEEK_SET) != 0) {
 		throw std::runtime_error("fseek() failed");
 	}
@@ -341,7 +341,7 @@ std::vector<std::string> native_file::list_dir(size_t max_size) const
 
 			do {
 				std::string s(wfd.cFileName);
-				ASSERT(s.size() > 0)
+				utki::assert(s.size() > 0, SL);
 
 				// do not add ./ and ../ directories, we are not interested in them
 				if (s == "." || s == "..") {
@@ -389,9 +389,13 @@ std::vector<std::string> native_file::list_dir(size_t max_size) const
 				int ret;
 				do {
 					ret = closedir(this->pdir);
-					ASSERT(ret == 0 || errno == EINTR, [](auto& o) {
-						o << "native_file::list_dir(): closedir() failed: " << strerror(errno);
-					})
+					utki::assert(
+						ret == 0 || errno == EINTR,
+						[](auto& o) {
+							o << "native_file::list_dir(): closedir() failed: " << strerror(errno);
+						},
+						SL
+					);
 				} while (ret != 0 && errno == EINTR);
 			}
 		} dirCloser(pdir);
