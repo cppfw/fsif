@@ -75,19 +75,18 @@ std::string fsif::suffix(std::string_view path_name)
 	size_t dot_pos = path_name.rfind('.');
 	if (dot_pos == std::string::npos || dot_pos == 0) { // NOTE: dot_pos is 0 for hidden files in *nix systems
 		return {};
-	} else {
-		utki::assert(dot_pos > 0, SL);
-		utki::assert(path_name.size() > 0, SL);
-		utki::assert(path_name.size() >= dot_pos + 1, SL);
-
-		// check for hidden file on *nix systems
-		if (path_name[dot_pos - 1] == '/') {
-			return {};
-		}
-
-		return std::string(path_name.substr(dot_pos + 1));
 	}
-	utki::assert(false, SL);
+
+	utki::assert(dot_pos > 0, SL);
+	utki::assert(path_name.size() > 0, SL);
+	utki::assert(path_name.size() >= dot_pos + 1, SL);
+
+	// check for hidden file on *nix systems
+	if (path_name[dot_pos - 1] == '/') {
+		return {};
+	}
+
+	return std::string(path_name.substr(dot_pos + 1));
 }
 
 std::string fsif::not_suffix(std::string_view path_name)
@@ -95,19 +94,18 @@ std::string fsif::not_suffix(std::string_view path_name)
 	size_t dot_pos = path_name.rfind('.');
 	if (dot_pos == std::string::npos || dot_pos == 0) { // NOTE: dot_pos is 0 for hidden files in *nix systems
 		return std::string(path_name);
-	} else {
-		utki::assert(dot_pos > 0, SL);
-		utki::assert(path_name.size() > 0, SL);
-		utki::assert(path_name.size() >= dot_pos + 1, SL);
-
-		// check for hidden file on *nix systems
-		if (path_name[dot_pos - 1] == '/') {
-			return std::string(path_name);
-		}
-
-		return std::string(path_name.substr(0, dot_pos));
 	}
-	utki::assert(false, SL);
+
+	utki::assert(dot_pos > 0, SL);
+	utki::assert(path_name.size() > 0, SL);
+	utki::assert(path_name.size() >= dot_pos + 1, SL);
+
+	// check for hidden file on *nix systems
+	if (path_name[dot_pos - 1] == '/') {
+		return std::string(path_name);
+	}
+
+	return std::string(path_name.substr(0, dot_pos));
 }
 
 std::string fsif::as_dir(std::string_view path)
