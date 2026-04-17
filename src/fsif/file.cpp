@@ -262,10 +262,13 @@ uint64_t file::size() const
 
 	file::guard file_guard(*this, fsif::mode::read);
 
-	return this->seek_forward(~0);
+	return this->seek_forward(std::numeric_limits<size_t>::max());
 }
 
-file::guard::guard(const file& f, fsif::mode io_mode) :
+file::guard::guard(
+	const file& f, //
+	fsif::mode io_mode
+) :
 	f(f)
 {
 	if (this->f.is_open()) {
