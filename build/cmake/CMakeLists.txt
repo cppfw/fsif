@@ -21,7 +21,14 @@ myci_add_source_files(deps_srcs
     RECURSIVE
 )
 
+if(MSVC)
+    set(fsif_no_warnings_as_errors NO_WARNINGS_AS_ERRORS)
+else()
+    set(fsif_no_warnings_as_errors)
+endif()
+
 myci_declare_library(${name}
+    ${fsif_no_warnings_as_errors}
     SOURCES
         ${srcs}
         ${deps_srcs}
