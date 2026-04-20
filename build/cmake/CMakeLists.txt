@@ -23,6 +23,7 @@ myci_add_source_files(minizip_srcs
 
 myci_declare_library(minizip
     NO_WARNINGS_AS_ERRORS
+    NO_ALL_WARNINGS
     SOURCES
         ${minizip_srcs}
     PUBLIC_INCLUDE_DIRECTORIES
