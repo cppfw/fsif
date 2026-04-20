@@ -14,31 +14,39 @@ myci_add_source_files(srcs
     RECURSIVE
 )
 
-set(deps_srcs)
-myci_add_source_files(deps_srcs
+set(minizip_srcs)
+myci_add_source_files(minizip_srcs
     DIRECTORY
-        ../../src_deps
+        ../../src_deps/minizip
     RECURSIVE
 )
 
-if(MSVC)
-    set(fsif_no_warnings_as_errors NO_WARNINGS_AS_ERRORS)
-else()
-    set(fsif_no_warnings_as_errors)
-endif()
+myci_declare_library(minizip
+    NO_WARNINGS_AS_ERRORS
+    SOURCES
+        ${minizip_srcs}
+    PUBLIC_INCLUDE_DIRECTORIES
+        ../../src_deps
+    DEPENDENCIES
+        ZLIB
+    NO_EXPORT
+)
 
 myci_declare_library(${name}
-    ${fsif_no_warnings_as_errors}
     SOURCES
         ${srcs}
-        ${deps_srcs}
     PUBLIC_INCLUDE_DIRECTORIES
         ../../src
-    PRIVATE_INCLUDE_DIRECTORIES
-        ../../src_deps
     INSTALL_INCLUDE_DIRECTORIES
         ../../src/${name}
     DEPENDENCIES
         utki
-        ZLIB
+        ${name}::minizip
+    NO_EXPORT
+)
+
+myci_export(
+    TARGETS
+        ${name}
+        minizip
 )
