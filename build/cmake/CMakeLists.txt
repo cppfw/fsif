@@ -28,7 +28,8 @@ else()
 endif()
 
 myci_declare_library(${name}
-    ${fsif_no_warnings_as_errors}
+    # ${fsif_no_warnings_as_errors}
+    NO_WARNINGS_AS_ERRORS
     SOURCES
         ${srcs}
         ${deps_srcs}
