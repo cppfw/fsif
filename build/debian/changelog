@@ -1,3 +1,9 @@
+libfsif (1.0.160) unstable; urgency=medium
+
+  * fix compiler warnings
+
+ -- Ivan Gagis <igagis@gmail.com>  Thu, 23 Apr 2026 23:26:49 +0300
+
 libfsif (1.0.159) unstable; urgency=medium
 
   * use utki::unique_ref
