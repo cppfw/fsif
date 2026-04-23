@@ -254,6 +254,7 @@ bool file::exists() const
 	return true;
 }
 
+// TODO: use std::uintmax_t for file size, seek size etc. It is used by std::filesystem::file_size()
 uint64_t file::size() const
 {
 	if (this->is_open()) {
