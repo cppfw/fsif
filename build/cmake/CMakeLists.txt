@@ -7,12 +7,7 @@ project(${name})
 # Otherwise VCPKG does not set the CMAKE_PREFIX_PATH to find packages.
 find_package(myci CONFIG REQUIRED)
 
-set(srcs)
-myci_add_source_files(srcs
-    DIRECTORY
-        ../../src/${name}
-    RECURSIVE
-)
+# declare minizip library
 
 set(minizip_srcs)
 myci_add_source_files(minizip_srcs
@@ -33,6 +28,15 @@ myci_declare_library(minizip
     NO_EXPORT
 )
 
+# declare the main library
+
+set(srcs)
+myci_add_source_files(srcs
+    DIRECTORY
+        ../../src/${name}
+    RECURSIVE
+)
+
 myci_declare_library(${name}
     SOURCES
         ${srcs}
@@ -45,6 +49,8 @@ myci_declare_library(${name}
         ${name}::minizip
     NO_EXPORT
 )
+
+# export both libraries
 
 myci_export(
     TARGETS
