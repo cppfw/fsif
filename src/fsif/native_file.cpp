@@ -231,8 +231,7 @@ void native_file::make_dir()
 
 // On iOS the std::filesystem is available only starting from iOS 13.0, so for
 // iOS < 13.0 we do not support directory creation.
-#if (CFG_OS == CFG_OS_LINUX || CFG_OS == CFG_OS_MACOSX || CFG_OS == CFG_OS_WINDOWS) && \
-	(CFG_OS_NAME != CFG_OS_NAME_IOS || CFG_OS_IOS_DEPLOYMENT_TARGET >= 130000)
+#if (CFG_OS_NAME != CFG_OS_NAME_IOS || CFG_OS_IOS_DEPLOYMENT_TARGET >= 130000)
 	std::filesystem::create_directories(this->path());
 #else
 	throw std::runtime_error("creating directory is not supported");
