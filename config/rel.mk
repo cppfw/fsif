@@ -8,6 +8,11 @@ this_cxxflags += -O3
 # Thus, suppress this warning.
 this_cxxflags += -Wno-ignored-optimization-argument
 
+# WORKAROUND: GCC 16 fails with:
+# include/c++/16.2.0/bits/stl_algobase.h:424:32: error: 'void* __builtin_memmove(void*, const void*, long long unsigned int)' reading between 2 and 9223372036854775807 bytes from a region of size 0 [-Werror=stringop-overread]
+# Which seems like a problem in GCC, so disable the error for now.
+this_cxxflags += -Wno-error=stringop-overread
+
 ifeq ($(os),macosx)
     # WORKAROUND:
     # clang-tidy on macos doesn't use /usr/local/include as default place to
