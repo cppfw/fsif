@@ -1,3 +1,9 @@
+libfsif (1.0.161) unstable; urgency=medium
+
+  * create_directories on unix systems
+
+ -- Ivan Gagis <igagis@gmail.com>  Thu, 27 Aug 2026 17:44:20 +0300
+
 libfsif (1.0.160) unstable; urgency=medium
 
   * fix compiler warnings
