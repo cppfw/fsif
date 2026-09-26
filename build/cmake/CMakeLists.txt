@@ -26,6 +26,7 @@ myci_declare_library(minizip
     DEPENDENCIES
         ZLIB
     NO_EXPORT
+    NO_FORMAT
 )
 
 # declare the main library
