@@ -24,7 +24,7 @@ myci_declare_library(minizip
     PUBLIC_INCLUDE_DIRECTORIES
         ../../src_deps
     DEPENDENCIES
-        ZLIB
+        ZLIB::ZLIBSTATIC
     NO_EXPORT
     NO_FORMAT
 )
