@@ -16,6 +16,18 @@ myci_add_source_files(minizip_srcs
     RECURSIVE
 )
 
+# WORKAROUND:
+# ZLIB exports different named targets depending on VCPKG triplet (static/dynamic),
+# So we need to check which ZLIB target we have.
+find_package(ZLIB CONFIG REQUIRED)
+if(TARGET ZLIB::ZLIB)
+    set(zlib_dependency_target ZLIB::ZLIB)
+elseif(TARGET ZLIB::ZLIBSTATIC)
+    set(zlib_dependency_target ZLIB::ZLIBSTATIC)
+else()
+    message(FATAL_ERROR "No ZLIB target found")
+endif()
+
 myci_declare_library(minizip
     NO_WARNINGS_AS_ERRORS
     NO_ALL_WARNINGS
@@ -24,7 +36,7 @@ myci_declare_library(minizip
     PUBLIC_INCLUDE_DIRECTORIES
         ../../src_deps
     DEPENDENCIES
-        ZLIB::ZLIBSTATIC
+        ${zlib_dependency_target}
     NO_EXPORT
     NO_FORMAT
 )
