@@ -282,7 +282,7 @@ jobs:
         brew trust cppfw/tap
         brew update
     - name: install ci tools
-      run: brew install myci make
+      run: brew install openssl myci make
     - name: set PATH to use latest make
       uses: myci-actions/export-env-var@main
       with: {name: PATH, value: "$HOMEBREW_PREFIX/opt/make/libexec/gnubin:$PATH"}
@@ -522,7 +522,7 @@ jobs:
         brew trust cppfw/tap
         brew update
     - name: install ci tools
-      run: brew install myci cmake
+      run: brew install openssl myci cmake
     - name: prepare vcpkg port
       run: |
         myci-vcpkg-prepare.sh --git-ref ${{ github.sha }}
@@ -633,7 +633,7 @@ jobs:
           brew trust cppfw/tap
           brew update
       - name: install ci tools
-        run: brew install myci conan
+        run: brew install openssl myci conan
       - name: create default conan profile
         run: |
           conan profile detect --name default
