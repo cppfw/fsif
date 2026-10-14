@@ -299,7 +299,9 @@ std::vector<std::string> zip_file::list_dir(size_t max_entries) const
 
 			// check if full file path starts with the this->path() string
 			const std::string& cur_path =
+				// NOLINTNEXTLINE(modernize-use-starts-ends-with, "std::string::starts_with is C++20, keep fsif C++17-compliant")
 				this->path().compare(0, 2, "./") == 0 ? this->path().substr(2) : this->path(); // remove leading "./"
+			// NOLINTNEXTLINE(modernize-use-starts-ends-with, "std::string::starts_with is C++20, keep fsif C++17-compliant")
 			if (filename.compare(0, cur_path.size(), cur_path) != 0) {
 				continue;
 			}
