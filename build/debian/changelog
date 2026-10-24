@@ -1,3 +1,9 @@
+libfsif (1.0.162) unstable; urgency=medium
+
+  * vcpkg: use module mode for ZLIB dependency
+
+ -- Ivan Gagis <igagis@gmail.com>  Sat, 24 Oct 2026 15:29:34 +0300
+
 libfsif (1.0.161) unstable; urgency=medium
 
   * create_directories on unix systems
