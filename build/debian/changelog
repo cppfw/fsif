@@ -1,3 +1,9 @@
+libfsif (1.0.163) unstable; urgency=medium
+
+  * update
+
+ -- Ivan Gagis <igagis@gmail.com>  Thu, 05 Nov 2026 02:23:48 +0200
+
 libfsif (1.0.162) unstable; urgency=medium
 
   * vcpkg: use module mode for ZLIB dependency
