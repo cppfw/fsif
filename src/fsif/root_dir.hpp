@@ -34,11 +34,27 @@ SOFTWARE.
 
 namespace fsif {
 
-// TODO: doxygen
+/**
+ * @brief File with a root directory.
+ * A root_dir is a file object which wraps another file object, and rewrites
+ * the paths of the wrapped file by prepending a given root directory to them.
+ */
 class root_dir : public file
 {
+	/**
+	 * @brief Union holding the wrapped base file.
+	 * The base file is held either as a const reference or as a non-const reference,
+	 * depending on how the root_dir was constructed.
+	 */
 	union base_file_union {
+		/**
+		 * @brief Variable base file.
+		 */
 		utki::unique_ref<file> variable;
+
+		/**
+		 * @brief Constant base file.
+		 */
 		utki::unique_ref<const file> constant;
 
 		base_file_union(utki::unique_ref<file> f) :
@@ -67,6 +83,12 @@ class root_dir : public file
 
 	// This constructor is private because the object it constructs can only be
 	// used in const context.
+	/**
+	 * @brief Constructor for constant base file.
+	 * @param base_file - constant base file to wrap.
+	 * @param root_directory - path to the root directory to set. It should have
+	 * trailing '/' character.
+	 */
 	root_dir(
 		utki::unique_ref<const file> base_file, //
 		std::string root_directory,
@@ -78,6 +100,11 @@ class root_dir : public file
 		this->init();
 	}
 
+	/**
+	 * @brief Initialize the root directory file.
+	 * Sets the path of the wrapped base file to the root directory
+	 * prepended to the path of this file.
+	 */
 	void init()
 	{
 		this->file::set_path_internal(std::string(
@@ -90,6 +117,7 @@ class root_dir : public file
 
 public:
 	/**
+	 * @brief Constructor.
 	 * @param base_file - a file to wrap.
 	 * @param root_directory - path to the root directory to set. It should have
 	 * trailing '/' character.
@@ -126,6 +154,9 @@ public:
 	root_dir(root_dir&&) = delete;
 	root_dir& operator=(root_dir&&) = delete;
 
+	/**
+	 * @brief Default destructor.
+	 */
 	~root_dir() override = default;
 
 private:

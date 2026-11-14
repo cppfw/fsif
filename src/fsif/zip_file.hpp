@@ -36,7 +36,11 @@ SOFTWARE.
 
 namespace fsif {
 
-// TODO: doxygen
+/**
+ * @brief A file located inside a zip archive.
+ * A zip_file is a file object which accesses the data of a particular file
+ * located inside a zip archive.
+ */
 class zip_file : public fsif::file
 {
 	utki::unique_ref<fsif::file> underlying_zip_file;
@@ -44,6 +48,11 @@ class zip_file : public fsif::file
 	void* handle = nullptr;
 
 public:
+	/**
+	 * @brief Constructor.
+	 * @param underlying_zip_file - the underlying zip archive file.
+	 * @param path - path to the file inside the zip archive.
+	 */
 	zip_file(
 		utki::unique_ref<fsif::file> underlying_zip_file, //
 		std::string_view path = std::string_view()
@@ -55,14 +64,47 @@ public:
 	zip_file(zip_file&&) = delete;
 	zip_file& operator=(zip_file&&) = delete;
 
+	/**
+	 * @brief Destructor.
+	 */
 	~zip_file() noexcept override;
 
+	/**
+	 * @brief Open the file.
+	 * @param mode - file open mode.
+	 */
 	void open_internal(fsif::mode mode) override;
+
+	/**
+	 * @brief Close the file.
+	 */
 	void close_internal() const noexcept override;
+
+	/**
+	 * @brief Read data from the file.
+	 * @param buf - buffer to read data into.
+	 * @return number of bytes actually read.
+	 */
 	size_t read_internal(utki::span<uint8_t> buf) const override;
+
+	/**
+	 * @brief Check if the file exists.
+	 * @return true if the file exists.
+	 */
 	bool exists() const override;
+
+	/**
+	 * @brief List directory entries.
+	 * @param max_entries - maximum number of entries to return.
+	 * @return list of directory entries.
+	 */
 	std::vector<std::string> list_dir(size_t max_entries = 0) const override;
 
+	/**
+	 * @brief Spawn a new file object.
+	 * @return a new file object which can be used to access the same file
+	 * concurrently with this one.
+	 */
 	utki::unique_ref<fsif::file> spawn() override
 	{
 		return utki::make_unique<zip_file>( //
