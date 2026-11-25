@@ -21,6 +21,19 @@ myci_add_source_files(minizip_srcs
 # - ZLIB::ZLIBSTATIC for statically linked triplets
 # I.e. the target name differs depending on the environment.
 # To avoid the mess we use find_package() for ZLIB in module mode.
+
+# WORKAROUND:
+# FindZLIB caches the resolved library files in the CMake cache. If the vcpkg registry
+# updates the zlib port to a version that installs the library under different file names
+# (e.g. "zd.lib" -> "libzd.lib"), the cached paths become stale and linking fails (LNK1104).
+# Invalidate the cache entries that no longer point to existing files so that FindZLIB
+# re-resolves them on reconfigure.
+foreach(_zlib_cache_var ZLIB_LIBRARY ZLIB_LIBRARY_RELEASE ZLIB_LIBRARY_DEBUG)
+    if(DEFINED "${_zlib_cache_var}" AND NOT EXISTS "${${_zlib_cache_var}}")
+        unset(${_zlib_cache_var} CACHE)
+    endif()
+endforeach()
+
 find_package(ZLIB REQUIRED)
 
 myci_declare_library(minizip
